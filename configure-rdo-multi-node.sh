@@ -2,7 +2,7 @@
 set -e
 
 if [ $# -lt 8 ]; then
-    echo "Usage: $0 <openstack_release> <ssh_key_file> <controller_host_name> <controller_host_ip> <network_host_name> <network_host_ip> <qemu_compute_host_names> <qemu_compute_host_ips> <hyperv_compute_host_names> <hyperv_compute_host_ips>"
+    echo "Usage: $0 <openstack_release> <ssh_key_file> <controller_host_name> <controller_host_ip> <network_host_name> <network_host_ip> <qemu_compute_host_name> <qemu_compute_host_ip> <hyperv_compute_host_name> <hyperv_compute_host_ip>"
     exit 1
 fi
 
@@ -18,11 +18,6 @@ QEMU_COMPUTE_VM_NAME=$7
 QEMU_COMPUTE_VM_IP=$8
 HYPERV_COMPUTE_VM_NAME=$9
 HYPERV_COMPUTE_VM_IP=${10}
-
-#QEMU_COMPUTE_VM_NAMES=(${7//,/ })
-#QEMU_COMPUTE_VM_IPS=(${8//,/ })
-#HYPERV_COMPUTE_VM_NAMES=(${9//,/ })
-#HYPERV_COMPUTE_VM_IPS=(${10//,/ })
 
 RDO_ADMIN=root
 RDO_ADMIN_PASSWORD=Passw0rd
