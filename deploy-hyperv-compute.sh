@@ -94,9 +94,10 @@ else
         HYPERV_FEATURES+=",NeutronHyperVAgent"
     fi
 
-    if [ -n "$CEILOMETER_ADMIN_AUTH_URL" ]; then
-        HYPERV_FEATURES+=",CeilometerComputeAgent"
-    fi
+    # Disable temporarily Ceilometer on Hyper-V until the latest bug fixes will merge.
+    #if [ -n "$CEILOMETER_ADMIN_AUTH_URL" ]; then
+    #    HYPERV_FEATURES+=",CeilometerComputeAgent"
+    #fi
 
     run_wsmancmd_with_retry $HYPERV_COMPUTE_VM_IP $HYPERV_ADMIN $HYPERV_PASSWORD "msiexec /i %TEMP%\\$MSI_FILE /qn /l*v %TEMP%\\HyperVNovaCompute_setup_log.txt \
     ADDLOCAL=$HYPERV_FEATURES GLANCEHOST=$GLANCE_HOST GLANCEPORT=$GLANCE_PORT RPCBACKEND=$RPC_BACKEND \
