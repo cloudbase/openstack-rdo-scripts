@@ -147,6 +147,12 @@ configure_ssh_pubkey_auth () {
 
     PUBKEYFILE=`mktemp -u /tmp/ssh_key_pub.XXXXXX`
 
+    # Don't fail if known_hosts missing
+
+    if [ ! -f ~/.ssh/known_hosts ] ; then
+      touch ~/.ssh/known_hosts
+    fi
+
     ssh-keygen -R $HOST
 
     wait_for_listening_port $HOST 22 $MAX_WAIT_SECONDS
