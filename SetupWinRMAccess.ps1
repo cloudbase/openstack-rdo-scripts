@@ -24,7 +24,7 @@ function SetAdminOnlyACL($path) {
 }
 
 # Download and install OpenSSL
-$filename="Win32OpenSSL_Light-1_0_1e.exe"
+$filename="Win32OpenSSL_Light-1_0_1f.exe"
 $filepath = "$ENV:Temp\$filename"
 (new-object System.Net.WebClient).DownloadFile("http://slproweb.com/download/$filename", $filepath)
 Start-Process -Wait -FilePath $filepath -ArgumentList "/silent /verysilent /sp- /suppressmsgboxes"
