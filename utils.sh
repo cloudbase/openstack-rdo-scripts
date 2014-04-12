@@ -100,6 +100,57 @@ set_hostname_ubuntu () {
     run_ssh_cmd_with_retry $SSHUSER_HOST "sudo sh -c \"echo $FQDN > /etc/hostname\""
 }
 
+config_network_adapter_centos () {
+    local SSHUSER_HOST=$1
+    local IFACE=$2
+    local IPADDR=$3
+    local NETMASK=$4
+    local GATEWAY=$5
+
+    run_ssh_cmd_with_retry $SSHUSER_HOST "cat << EOF > /etc/sysconfig/network-scripts/ifcfg-$IFACE
+DEVICE="$IFACE"
+BOOTPROTO="none"
+MTU="1500"
+ONBOOT="yes"
+IPADDR="$IPADDR"
+NETMASK="$NETMASK"
+GATEWAY="$GATEWAY"
+EOF"
+}
+
+ifup_interface () {
+    local SSHUSER_HOST=$1
+    local IFACE=$2
+
+    run_ssh_cmd_with_retry $SSHUSER_HOST "ifup $IFACE"
+}
+
+ifdown_interface () {
+    local SSHUSER_HOST=$1
+    local IFACE=$2
+
+    run_ssh_cmd_with_retry $SSHUSER_HOST "ifdown $IFACE"
+}
+
+ifdown_ifup_interface () {
+    local SSHUSER_HOST=$1
+    local IFACE=$2
+
+    run_ssh_cmd_with_retry $SSHUSER_HOST "ifdown $IFACE; ifup $IFACE"
+}
+
+set_interface_static_ip_from_dhcp_centos () {
+    local SSHUSER_HOST=$1
+    local IFACE=$2
+    local GATEWAY=`run_ssh_cmd_with_retry $SSHUSER_HOST "route -n | grep '^0.0.0.0 '" | awk '{print $2}'`
+    local IPADDR
+    local NETMASK
+    local BCAST
+    read IPADDR NETMASK BCAST <<< `run_ssh_cmd_with_retry $SSHUSER_HOST "ifconfig $IFACE | sed -n  's/^\s*inet addr:\([0-9.]*\)\s* Bcast:\([0-9.]*\)\s*Mask:\([0-9.]*\)$/\1 \3 \2/p'"`
+
+    config_network_adapter_centos $SSHUSER_HOST $IFACE $IPADDR $NETMASK $GATEWAY
+}
+
 check_interface_exists () {
     SSHUSER_HOST=$1
     IFACE=$2
