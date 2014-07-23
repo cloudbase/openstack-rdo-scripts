@@ -106,6 +106,7 @@ config_network_adapter_centos () {
     local IPADDR=$3
     local NETMASK=$4
     local GATEWAY=$5
+    local DNS1="8.8.8.8"
 
     run_ssh_cmd_with_retry $SSHUSER_HOST "cat << EOF > /etc/sysconfig/network-scripts/ifcfg-$IFACE
 DEVICE="$IFACE"
@@ -115,6 +116,8 @@ ONBOOT="yes"
 IPADDR="$IPADDR"
 NETMASK="$NETMASK"
 GATEWAY="$GATEWAY"
+PEERDNS="yes"
+DNS1="$DNS1"
 EOF"
 }
 
