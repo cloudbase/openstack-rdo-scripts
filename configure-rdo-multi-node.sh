@@ -179,6 +179,8 @@ run_ssh_cmd_with_retry $RDO_ADMIN@$CONTROLLER_VM_IP "iptables -I INPUT -s $NETWO
 if [ -n "$HYPERV_COMPUTE_VM_IP" ]; then
     run_ssh_cmd_with_retry $RDO_ADMIN@$CONTROLLER_VM_IP "iptables -I INPUT -s $HYPERV_COMPUTE_VM_IP/32 -p tcp --dport 9696 -j ACCEPT"
     run_ssh_cmd_with_retry $RDO_ADMIN@$CONTROLLER_VM_IP "iptables -I INPUT -s $HYPERV_COMPUTE_VM_IP/32 -p tcp --dport 9292 -j ACCEPT"
+    run_ssh_cmd_with_retry $RDO_ADMIN@$CONTROLLER_VM_IP "iptables -I INPUT -s $HYPERV_COMPUTE_VM_IP/32 -p tcp --dport 8776 -j ACCEPT"
+    run_ssh_cmd_with_retry $RDO_ADMIN@$CONTROLLER_VM_IP "iptables -I INPUT -s $HYPERV_COMPUTE_VM_IP/32 -p tcp --dport 3260 -j ACCEPT"
 fi
 
 run_ssh_cmd_with_retry $RDO_ADMIN@$CONTROLLER_VM_IP "service iptables save"
